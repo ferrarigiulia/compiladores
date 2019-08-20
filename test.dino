@@ -1,0 +1,7 @@
+# semantic errors for lists
+
+i = 2
+l = list()
+l.append(1)
+s = "Z"
+

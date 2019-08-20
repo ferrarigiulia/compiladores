@@ -1,0 +1,57 @@
+# Dragon curve fractal
+# https://en.wikipedia.org/wiki/Dragon_curve
+
+def left(level):
+    if level == 0:
+        print("    <line x1='0' y1='0' x2='500' y2='0' stroke='blue'/>")
+    if level != 0:
+        print("    <g transform='scale(0.7071) rotate(-45)'>")
+        left(level - 1)
+        print("    <g transform='translate(500,0) rotate(90)'>")
+        right(level - 1)
+        print("    </g></g>")
+
+def right(level):
+    if level == 0:
+        print("    <line x1='0' y1='0' x2='500' y2='0' stroke='red'/>")
+    if level != 0:
+        print("    <g transform='scale(0.7071) rotate(45)'>")
+        left(level - 1)
+        print("    <g transform='translate(500,0) rotate(-90) '>")
+        right(level - 1)
+        print("    </g></g>")
+
+# LCG with m=134456, a=8121 and c=28411 (random0)
+# https://en.wikipedia.org/wiki/Linear_congruential_generator
+
+def random(last):
+    return (8121 * last + 28411) % 134456
+
+def mystery(level, last):
+    if level == 0:
+        print("    <line x1='0' y1='0' x2='500' y2='0' stroke='black'/>")
+    if level != 0:
+        last = random(last) # generate next random
+        bit = (last / 256) % 2 # get ninth bit
+        if bit == 0:
+            print("    <g transform='scale(0.7071) rotate(-45)'>")
+            mystery(level - 1, last)
+            print("    <g transform='translate(500,0) rotate(90)'>")
+            mystery(level - 1, last)
+        if bit == 1:
+            print("    <g transform='scale(0.7071) rotate(45)'>")
+            mystery(level - 1, last)
+            print("    <g transform='translate(500,0) rotate(-90) '>")
+            mystery(level - 1, last)
+        print("    </g></g>")
+
+print("<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='1000' height='800' stroke-width='50'>")
+print("  <g transform='translate(300,500)'>")
+
+left(10)
+
+#seed = 0
+#mystery(8, seed)
+
+print("  </g>")
+print("</svg>")
